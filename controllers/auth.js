@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { json } = require("body-parser");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");

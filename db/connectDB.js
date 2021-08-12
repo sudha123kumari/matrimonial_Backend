@@ -1,7 +1,8 @@
+require("dotenv").config();
 const mongoose = require("mongoose");
 mongoose
   .connect(
-    "mongodb+srv://singhtushar:tushar1999@registerapi.fgpov.mongodb.net/matrimonial",
+    `mongodb+srv://singhtushar:${process.env.DB_PASSWORD}@registerapi.fgpov.mongodb.net/matrimonial`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
