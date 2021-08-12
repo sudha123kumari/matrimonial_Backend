@@ -9,7 +9,7 @@ const authRoute = require("./routes/auth");
 const loginRoute = require("./routes/login");
 const usersRoute = require("./routes/users");
 app.get("/hello", (req, res) => {
-  res.send("okkk done");
+  res.send("okay done");
 });
 
 app.use("/Api", authRoute);

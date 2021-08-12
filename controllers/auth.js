@@ -47,13 +47,13 @@ exports.otpSend = (req, res) => {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "sravzyasudha512000@gmail.com",
-        pass: "Sonam@8789",
+        user: `${process.env.EMAIL_ID}`,
+        pass: `${process.env.PASSWORD1}`,
       },
     });
 
     const mailOptions = {
-      from: "sravzyasudha512000@gmail.com",
+      from: `${process.env.EMAIL_ID}`,
       to: email,
       subject: "Sending Email using Node.js",
       html: `
@@ -150,8 +150,8 @@ exports.otpSignup = (req, res) => {
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: "sravzyasudha512000@gmail.com",
-          pass: "Sonam@123",
+          user: `${process.env.EMAIL_ID}`,
+          pass: `${process.env.PASSWORD2}`,
         },
       });
 
