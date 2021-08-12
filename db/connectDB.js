@@ -1,11 +1,14 @@
 const mongoose = require("mongoose");
 mongoose
-  .connect("mongodb://localhost:27017/Users", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    // useFindAndModify: true,
-    // useCreateIndex: true,
-  })
+  .connect(
+    "mongodb+srv://singhtushar:tushar1999@registerapi.fgpov.mongodb.net/matrimonial",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      // useFindAndModify: true,
+      // useCreateIndex: true,
+    }
+  )
   .then(() => {
     console.log("database connected successfully");
   })
