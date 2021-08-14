@@ -16,7 +16,7 @@ exports.otpSend = (req, res) => {
       await newUser.save((err, success) => {
         if (err) {
           console.log(
-            "error ocuured in while creating new user. check controller/auth/otpSend "
+            "error occured in while creating new user. check controller/auth/otpSend "
           );
           return res.status(400), json({ error: err });
         } else {
@@ -49,7 +49,7 @@ exports.otpSend = (req, res) => {
       service: "gmail",
       auth: {
         user: `${process.env.EMAIL_ID}`,
-        pass: `${process.env.PASSWORD1}`,
+        pass: `${process.env.PASSWORD}`,
       },
     });
 
@@ -152,7 +152,7 @@ exports.otpSignup = (req, res) => {
         service: "gmail",
         auth: {
           user: `${process.env.EMAIL_ID}`,
-          pass: `${process.env.PASSWORD2}`,
+          pass: `${process.env.PASSWORD}`,
         },
       });
 
