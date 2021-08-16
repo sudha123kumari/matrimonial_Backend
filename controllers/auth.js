@@ -7,10 +7,11 @@ const nodemailer = require("nodemailer");
 
 exports.otpSend = (req, res) => {
   const { email } = req.body;
-  console.log("hello user");
+
   User.findOne({ email }).exec(async (err, user) => {
     if (user) {
       console.log(user);
+      return res.status(400).json({ error: "email already exit" });
     } else {
       let newUser = new User({ email });
       await newUser.save((err, success) => {
@@ -18,9 +19,12 @@ exports.otpSend = (req, res) => {
           console.log(
             "error occured in while creating new user. check controller/auth/otpSend "
           );
-          return res.status(400), json({ error: err });
+          return res.status(400).json({ error: err });
         } else {
           console.log("successfully created the user");
+          return res
+            .status(200)
+            .json({ success: "successfully created the user" });
         }
       });
     }
@@ -81,105 +85,6 @@ exports.otpSend = (req, res) => {
     //     });
     //   }
     // });
-  });
-};
-
-exports.otpVerify = async (req, res) => {
-  const { otp, email } = req.body;
-  console.log(otp);
-  if (otp) {
-    User.findOne({ email }).exec((err, user) => {
-      if (user) {
-        const presentTime = new Date().getTime();
-        const validTime = user.updatedAt.getTime() + 5 * 60000;
-        if (presentTime > validTime) {
-          return res.json("time limit exceesded for otp");
-        } else {
-          if (user.otp) {
-            console.log(user.otp);
-            if (user.otp === otp) {
-              res.json({ messg: "verified" });
-            } else {
-              return res.json({ error: "otp incorrect" });
-            }
-          } else {
-            return res.json("otp doesnt exist in database");
-          }
-        }
-      } else {
-        return res.json({
-          message: "do you have signed up yet",
-        });
-      }
-    });
-  } else {
-    return res.json({ error: "Something went wrong!!!" });
-  }
-};
-
-exports.otpSignup = (req, res) => {
-  const { name, email, password } = req.body;
-  console.log(name);
-  const otp = otpGenerator.generate(6, {
-    alphabets: false,
-    upperCase: false,
-    specialChars: false,
-  });
-  console.log(otp);
-
-  User.findOne({ email }).exec((err, user) => {
-    if (user) {
-      console.log(user);
-
-      // const presentTime = new Date();
-      // const present = presentTime.getTime() + 5 * 60000;
-      // console.log(presentTime);
-      // const x = new Date(present);
-      // console.log(x);
-      // console.log(present);
-      // console.log(user.updatedAt);
-      // console.log(user.updatedAt.getTime());
-      // console.log(x.getTime());
-      return res.status(400).json({
-        error: "user with this mail already exist",
-      });
-    } else {
-      const token = jwt.sign({ name, email, password }, "aSecretKey", {
-        expiresIn: "20m",
-      });
-
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: `${process.env.EMAIL_ID}`,
-          pass: `${process.env.PASSWORD}`,
-        },
-      });
-
-      const mailOptions = {
-        from: "sravzyasudha512000@gmail.com",
-        to: email,
-        subject: "Sending Email using Node.js",
-        html: `
-        <h2>use your password </h2>
-        <a>${token}</a>
-        `,
-      };
-
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          console.log(error);
-          return res.status(400).json({
-            error: error,
-          });
-        } else {
-          console.log("Email sent: " + info.response);
-          return res.status(200).json({
-            error: error,
-          });
-        }
-      });
-    }
   });
 };
 
@@ -270,7 +175,7 @@ exports.educationalInfo = (req, res) => {
           console.log(user);
           return res
             .status(200)
-            .json({ message: "general information successfully saved" });
+            .json({ message: "educational information successfully saved" });
         }
       });
     } else {
@@ -320,12 +225,12 @@ exports.personalInfo = (req, res) => {
 
 exports.deleteUser = (req, res) => {
   console.log(req.body);
-  const { name, email, password } = req.body;
+  const { email } = req.body;
   User.findOne({ email }).exec((err, user) => {
     if (user) {
       user.remove();
 
-      return res.status(200).json({ message: "user delete" });
+      return res.status(200).json({ message: "user deleted" });
     } else {
       return res.status(200).json({ error: "user doesnot exist" });
     }
