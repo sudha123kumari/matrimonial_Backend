@@ -24,63 +24,63 @@ exports.otpSend = (req, res) => {
         }
       });
     }
-    const otpGenerator = require("otp-generator");
-    const otp = otpGenerator.generate(6, {
-      alphabets: false,
-      upperCase: false,
-      specialChars: false,
-    });
+    // const otpGenerator = require("otp-generator");
+    // const otp = otpGenerator.generate(6, {
+    //   alphabets: false,
+    //   upperCase: false,
+    //   specialChars: false,
+    // });
 
-    User.findOne({ email }).exec(async (err, user) => {
-      if (user) {
-        user.otp = otp;
-        console.log(user.otp);
-        await user.save((err) => {
-          if (err) {
-            return res.json({ error: "problem while saving otp to database" });
-          } else {
-            console.log("otp modifeied");
-          }
-        });
-      }
-    });
+    // User.findOne({ email }).exec(async (err, user) => {
+    //   if (user) {
+    //     user.otp = otp;
+    //     console.log(user.otp);
+    //     await user.save((err) => {
+    //       if (err) {
+    //         return res.json({ error: "problem while saving otp to database" });
+    //       } else {
+    //         console.log("otp modifeied");
+    //       }
+    //     });
+    //   }
+    // });
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: `${process.env.EMAIL_ID}`,
-        pass: `${process.env.PASSWORD}`,
-      },
-    });
+    // const transporter = nodemailer.createTransport({
+    //   service: "gmail",
+    //   auth: {
+    //     user: `${process.env.EMAIL_ID}`,
+    //     pass: `${process.env.PASSWORD}`,
+    //   },
+    // });
 
-    const mailOptions = {
-      from: `${process.env.EMAIL_ID}`,
-      to: email,
-      subject: "Sending Email using Node.js",
-      html: `
-      
-      <h2>use the opt before 5 minutes </h2>
-      <strong>${otp}</strong>
-      
-      `,
-    };
+    // const mailOptions = {
+    //   from: `${process.env.EMAIL_ID}`,
+    //   to: email,
+    //   subject: "Sending Email using Node.js",
+    //   html: `
 
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-        console.log(
-          "error while sending the mail check controller/auth/sendOtp"
-        );
-        return res.status(400).json({
-          error: error,
-        });
-      } else {
-        console.log("Email sent: " + info.response);
-        return res.status(200).json({
-          message: "email sent successfully",
-        });
-      }
-    });
+    //   <h2>use the opt before 5 minutes </h2>
+    //   <strong>${otp}</strong>
+
+    //   `,
+    // };
+
+    // transporter.sendMail(mailOptions, function (error, info) {
+    //   if (error) {
+    //     console.log(error);
+    //     console.log(
+    //       "error while sending the mail check controller/auth/sendOtp"
+    //     );
+    //     return res.status(400).json({
+    //       error: error,
+    //     });
+    //   } else {
+    //     console.log("Email sent: " + info.response);
+    //     return res.status(200).json({
+    //       message: "email sent successfully",
+    //     });
+    //   }
+    // });
   });
 };
 
