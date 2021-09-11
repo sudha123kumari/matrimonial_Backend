@@ -9,6 +9,7 @@ app.use(cors());
 const authRoute = require("./routes/auth");
 const loginRoute = require("./routes/login");
 const usersRoute = require("./routes/users");
+const userDetailUpdate = require("./routes/updates");
 app.get("/hello", (req, res) => {
   res.send("okay done");
 });
@@ -16,6 +17,7 @@ app.get("/hello", (req, res) => {
 app.use("/Api", authRoute);
 app.use("/User", loginRoute);
 app.use("/Users", usersRoute);
+app.use("/userDetailUpdate", userDetailUpdate);
 
 const port = process.env.PORT || 8003;
 app.listen(port, () => {
