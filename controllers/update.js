@@ -8,10 +8,17 @@ const nodemailer = require("nodemailer");
 exports.updatePassword = (req, res) => {
   console.log(req.body);
   const { email, dob, password } = req.body;
-  const d = new Date(dob);
   User.findOne({ email }).exec(async (err, user) => {
     if (user) {
-      if (new Date(user.dob).getTime() === d.getTime()) {
+      var d = user.dob.getDate();
+      var m = user.dob.getMonth() + 1;
+      var y = user.dob.getFullYear();
+
+      console.log(dateString);
+      var dateString =
+        (m <= 9 ? "0" + m : m) + "-" + (d <= 9 ? "0" + d : d) + "-" + y;
+
+      if (dateString === dob) {
         user.password = password;
         console.log(user.password);
         await user.save((err) => {
@@ -37,16 +44,23 @@ exports.updatePassword = (req, res) => {
 exports.verifyAccount = (req, res) => {
   console.log(req.body);
   const { email, dob } = req.body;
-  const d = new Date(dob);
   User.findOne({ email }).exec((err, user) => {
     if (user) {
-      if (new Date(user.dob).getTime() === d.getTime()) {
+      var d = user.dob.getDate();
+      var m = user.dob.getMonth() + 1;
+      var y = user.dob.getFullYear();
+
+      console.log(dateString);
+      var dateString =
+        (m <= 9 ? "0" + m : m) + "-" + (d <= 9 ? "0" + d : d) + "-" + y;
+
+      if (dateString === dob) {
         return res.status(200).json({ message: "ok" });
       } else {
         return res.status(200).json({ message: "dob didn't match" });
       }
     } else {
-      return res.status(200).json({ message: "userfgy doesnot exist" });
+      return res.status(200).json({ message: "user doesnot exist" });
     }
   });
 };
